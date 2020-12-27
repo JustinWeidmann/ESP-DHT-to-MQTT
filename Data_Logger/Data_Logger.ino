@@ -92,6 +92,7 @@ void setup() {
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   //client.setCallback(callback);
+  digitalWrite(BUILTIN_LED, HIGH);  //LED off
 }
 
 void loop() {
@@ -109,6 +110,7 @@ void checkSensor(){
   float humidity = dht.getHumidity();
   float temperature = dht.getTemperature();
   float fTemp = dht.toFahrenheit(temperature);
+  //float fTemp = dht.computeHeatIndex(dht.toFahrenheit(temperature), humidity, true);
 
   humidityStr = String(humidity);
   humidityStr.toCharArray(humOut, humidityStr.length() + 1);
@@ -117,7 +119,7 @@ void checkSensor(){
   tempStr.toCharArray(tempOut, tempStr.length() + 1);
   //Serial.println(humOut);
   //Serial.println(tempOut);
-
+  
   client.publish("JustinsRoom/DHT/$humidity", humOut, true);
   client.publish("JustinsRoom/DHT/$temp", tempOut, true);
 
